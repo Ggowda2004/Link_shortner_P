@@ -1,4 +1,4 @@
-from .database import Base
+from database import Base
 from sqlalchemy.orm import Mapped, mapped_column
 import uuid # is a 16 byte (128 bit) number that is used to identify information in computer systems. The term "UUID" stands for "Universally Unique Identifier," and it is designed to be unique across both time and space, making it an ideal choice for generating unique identifiers for various applications.
 from sqlalchemy.dialects.postgresql import UUID
@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 
 class urls(Base):
 
-    __tablename_ = "URLS"
+    __tablename__ = "URLS"
 
     id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid = True),
