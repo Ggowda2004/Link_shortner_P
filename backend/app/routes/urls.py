@@ -1,6 +1,7 @@
+from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from services import create_url, get_all_urls, get_url_by_code
-from schemas import UrlCreate
+from schemas import UrlCreate, UrlResponse
 from database import get_db
 from sqlalchemy.orm import Session
 
@@ -22,9 +23,11 @@ def shorten_url(url:UrlCreate, db: Session = Depends(get_db)):
             status_code=400,
             detail=f"Failed to shorten the url: {str(e)}"
         )
+
 @router.get("/all_urls",
             summary="get all urls",
-            response_description="list of all urls")
+            response_description="list of all urls",
+            response_model=List[UrlResponse])
 def list_urls(db: Session = Depends(get_db)):
     urls = get_all_urls(db)
     return urls
