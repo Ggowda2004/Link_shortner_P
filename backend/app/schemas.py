@@ -12,6 +12,6 @@ class UrlResponse(BaseModel):
     click_count : int
     created_at:datetime
 
-    class config:
-        from_attributes = True
+    class Config:
+        orm_mode = True
     #Pydantic will look at the object’s attributes (like url.id, url.original_url) instead of expecting a dict.
