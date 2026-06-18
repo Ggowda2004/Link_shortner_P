@@ -5,6 +5,9 @@ from models import urls
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException, Depends
 from starlette.responses import RedirectResponse
+from redis_client import redis_client
+import time
+
 
 #code_generation
 def generate_code(length=6):
@@ -16,16 +19,14 @@ def create_url(url:UrlCreate, db: Session):
     while try_n<=5:
         short_code = generate_code()
         new_url = urls(
-            original_url = url.original_url,
+            original_url = str(url.original_url),
             short_code = short_code,   
         )
         db.add(new_url)
         try:
             db.commit()
             db.refresh(new_url)
-            return {
-        "short_url": f"http://localhost:8000/{short_code}"
-        }
+            return new_url
         except IntegrityError:
             db.rollback()
         try_n+=1
@@ -39,6 +40,15 @@ def increment_click_count(db:Session, url:urls)->None:
     
 
 def get_url_by_code(short_code:str,db: Session):
+    start_time = time.perf_counter()
+    cached_url = redis_client.get(short_code)
+
+    if cached_url:
+        redis_time = (time.perf_counter() - start_time) * 1000
+        print(f"Cache hit. Time taken: {redis_time:.2f} ms")
+        increment_click_count(db, db.query(urls).filter(urls.short_code==short_code).first())
+        return RedirectResponse(url = cached_url)
+    
     url = db.query(urls).filter(urls.short_code==short_code).first()
     if not url:
         raise HTTPException(status_code=404, detail="URL not found")
@@ -46,6 +56,9 @@ def get_url_by_code(short_code:str,db: Session):
     # db.commit()
     # db.refresh(url)
     increment_click_count(db, url)
+    redis_client.set(short_code, url.original_url, ex=3600)  # Cache for 1 hour
+    db_time = (time.perf_counter() - start_time) * 1000  # Convert to milliseconds
+    print(f"⏳ Cache miss! DB Fetch Time taken: {db_time:.4f} ms")
     return RedirectResponse(url=url.original_url)
 
 def get_all_urls(db: Session):
