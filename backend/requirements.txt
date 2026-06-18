@@ -4,3 +4,5 @@ pydantic==2.13.4
 sqlalchemy
 python-dotenv==1.2.2
 psycopg2-binary==2.9.6
+redis==8.0.0
+pytest

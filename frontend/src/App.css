@@ -92,6 +92,23 @@
   background-color: #1d4ed8;
 }
 
+.copy-btn {
+  background-color: #e5e7eb;
+  color: #111827;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.copy-btn:hover {
+  background-color: #d1d5db;
+  border-color: #9ca3af;
+}
+
 .refresh-btn {
   background-color: #f3f4f6;
   color: #374151;
