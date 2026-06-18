@@ -13,7 +13,18 @@ app.add_middleware(
     allow_credentials=True
 )
 # Create tables
-models.Base.metadata.create_all(bind=engine)
+# models.Base.metadata.create_all(bind=engine)
+
+
+#async def create_tables():
+async def create_tables():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
+#running it at startup
+@app.on_event("startup")
+async def startup():
+    await create_tables()
 
 app.include_router(url_router)
 

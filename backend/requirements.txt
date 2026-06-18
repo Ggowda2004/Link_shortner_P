@@ -3,6 +3,10 @@ fastapi==0.137.1
 pydantic==2.13.4
 sqlalchemy
 python-dotenv==1.2.2
-psycopg2-binary==2.9.6
+# psycopg2-binary==2.9.6
+# You have two excellent async-compatible alternatives to replace psycopg2
+asyncpg
 redis==8.0.0
 pytest
+# For PostgreSQL (Most recommended for this stack)
+asyncpg

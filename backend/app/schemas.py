@@ -12,6 +12,7 @@ class UrlResponse(BaseModel):
     click_count : int
     created_at:datetime
 
+    model_config = ConfigDict(from_attributes=True)
     # class Config:
     #     # orm_mode = True
     #     from_attributes = True
@@ -19,4 +20,3 @@ class UrlResponse(BaseModel):
     #Pydantic will look at the object’s attributes (like url.id, url.original_url) instead of expecting a dict.
 
      # 2. Define it as a direct class variable using ConfigDict
-    model_config = ConfigDict(from_attributes=True)
