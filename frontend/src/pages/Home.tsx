@@ -160,8 +160,8 @@ function Home() {
   const [urls, setUrls] = useState([])
   const [error, setError] = useState("")
 
-  // 👇 DYNAMIC URL RESOLUTION: Looks for the Vite environment variable, falls back safely to localhost
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+  // 👇 DYNAMIC URL RESOLUTION: Use configured backend base URL, or current browser origin in production
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || window.location.origin;
 
   const fetchUrls = async () => {
     try {

@@ -1,16 +1,14 @@
-# Ignore Python compilation caches
-**/__pycache__/
+﻿__pycache__/
 *.pyc
 *.pyo
 *.pyd
-
-# Ignore local environment files and virtual environments
-.env
-.venv
+.Python
 env/
 venv/
-ENV/
-
-# Ignore git metadata
+pyvenv.cfg
+.pytest_cache/
+*.log
+.DS_Store
+.env
 .git
 .gitignore

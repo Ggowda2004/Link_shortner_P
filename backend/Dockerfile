@@ -1,4 +1,4 @@
-FROM python:3.11
+﻿FROM python:3.11
 WORKDIR /workspace
 
 COPY requirements.txt .
@@ -9,4 +9,4 @@ EXPOSE 8080
 
 ENV PYTHONPATH=.:/workspace/app
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["sh", "-c", "exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8080}"]

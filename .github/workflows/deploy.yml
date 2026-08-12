@@ -26,8 +26,8 @@ jobs:
         source: ./backend # 👈 Tells GitHub to build only the backend folder
         env_vars: |
           PYTHONPATH=.:/workspace/app
-          DATABASE_URL=your_production_database_url_here
-          REDIS_URL=your_production_redis_url_here
+          DATABASE_URL=${{ secrets.DATABASE_URL }}
+          REDIS_URL=${{ secrets.REDIS_URL }}
 
   # JOB 2: Build and Deploy the React container
   deploy-frontend:
@@ -47,3 +47,5 @@ jobs:
         service: shortener-frontend-web
         region: us-central1
         source: ./frontend # 👈 Tells GitHub to build only the frontend folder
+        env_vars: |
+          VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}
