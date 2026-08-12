@@ -22,7 +22,7 @@ async def shorten_url(url:UrlCreate, db: AsyncSession = Depends(get_db)):
     try:
         new_url = await create_url(url, db )
         # create_url returns the ORM object; frontend expects a `short_url` string
-        return {"short_url": f"http://localhost:8000/{new_url.short_code}"}
+        return {"short_url": f"http://localhost:8080/{new_url.short_code}"}
     except Exception as e:
         raise HTTPException(
             status_code=400,

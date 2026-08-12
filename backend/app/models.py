@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 
 class urls(Base):
 
-    __tablename__ = "URLS"
+    __tablename__ = "urls"
 
     id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid = True),

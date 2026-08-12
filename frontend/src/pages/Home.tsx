@@ -119,11 +119,11 @@ function Home() {
                     </a>
 
                     <span className="field-label">Short Link</span>
-                    <a href={`http://localhost:8000/${item.short_code}`} target="_blank" rel="noreferrer" className="short-link">
-                      {`http://localhost:8000/${item.short_code}`}
+                    <a href={`http://localhost:8080/${item.short_code}`} target="_blank" rel="noreferrer" className="short-link">
+                      {`http://localhost:8080/${item.short_code}`}
                     </a>
                     <button
-                      onClick={() => navigator.clipboard.writeText(`http://localhost:8000/${item.short_code}`)}
+                      onClick={() => navigator.clipboard.writeText(`http://localhost:8080/${item.short_code}`)}
                       className="copy-btn"
                     >
                       Copy

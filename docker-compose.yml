@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  postgres-db:
+    image: postgres:15-alpine
+    container_name: postgres-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=mydb
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      # This command checks if Postgres is actually running and ready to take queries
+      test: ["CMD-SHELL", "pg_isready -U myuser -d mydb"]
+      interval: 3s     # Check every 3 seconds
+      timeout: 3s      # Fail check if it takes longer than 3 seconds
+      retries: 5       # Try 5 times before declaring it unhealth
+
+  cache-redis:
+    image: redis:7-alpine
+    container_name: cache-redis
+    ports:
+      - "6379:6379"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - REDIS_URL=redis://cache-redis:6379/0
+      - DATABASE_URL=postgresql+asyncpg://myuser:mypassword@postgres-db:5432/mydb
+      - PYTHONPATH=.:/workspace/app
+    restart: on-failure
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+      cache-redis:
+        condition: service_started
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+volumes:
+  pg_data:

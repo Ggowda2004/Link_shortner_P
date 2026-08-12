@@ -1,0 +1,15 @@
+# CRITICAL: Ignore local Node dependencies (Docker will install its own fresh copies)
+node_modules/
+npm-debug.log*
+
+# Ignore build outputs
+dist/
+build/
+
+# Ignore local environment overrides
+.env
+.env.local
+
+# Ignore git metadata
+.git
+.gitignore
